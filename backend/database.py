@@ -1,0 +1,25 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from core.config import DATABASE_URL
+
+
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+def init_db():
+    from backend.models import Transcript, Alert, Summary
+    Base.metadata.create_all(bind=engine)
+    print("✅ Database tables created!")

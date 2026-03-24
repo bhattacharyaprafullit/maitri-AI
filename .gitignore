@@ -1,0 +1,12 @@
+.env
+venv/
+faiss_store/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+transcript.txt
+*.wav
+*.egg-info/
+.pytest_cache/
+.DS_Store
