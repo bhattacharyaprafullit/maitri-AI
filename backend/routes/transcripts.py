@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from backend.database import get_db
-from backend.models import Transcript
+from database import get_db
+from models import Transcript
 from pydantic import BaseModel
 
 
@@ -28,7 +28,5 @@ def save_transcript(data: TranscriptIn, db: Session = Depends(get_db)):
 
 @router.get("/transcripts/{meeting_id}")
 def get_transcripts(meeting_id: str, db: Session = Depends(get_db)):
-    transcripts = db.query(Transcript).filter(
-        Transcript.meeting_id == meeting_id
-    ).all()
+    transcripts = db.query(Transcript).filter(Transcript.meeting_id == meeting_id).all()
     return transcripts

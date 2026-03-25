@@ -4,6 +4,9 @@ from groq import Groq
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from typing import List
+from database import get_db
+from sqlalchemy.orm import Session
+from models import UserMetaData
 
 load_dotenv()
 
@@ -75,15 +78,16 @@ Rules:
     return result
 
 
-def save_config(result: NameVariants):
-    config = {
-        "name": result.original_name,
-        "english_variants": result.english_variants,
-        "hindi_variants": result.hindi_variants,
-        "variants": result.all_variants    # main.py ye use karega
-    }
-    with open("user_config.json", "w", encoding="utf-8") as f:
-        json.dump(config, f, ensure_ascii=False, indent=2)
+def save_config(result: NameVariants, db: Session):
+    config = UserMetaData(
+        name=result.original_name,
+        english_variants=result.english_variants,
+        hindi_variants =result.hindi_variants,
+        variants= result.all_variants
+    )
+    db.add(config)
+    db.commit()
+    
     print(f"✅ Saved to user_config.json")
 
 

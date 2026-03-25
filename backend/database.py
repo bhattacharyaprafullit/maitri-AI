@@ -20,6 +20,6 @@ def get_db():
 
 
 def init_db():
-    from backend.models import Transcript, Alert, Summary
+    
     Base.metadata.create_all(bind=engine)
     print("✅ Database tables created!")
